@@ -1,9 +1,58 @@
 import math
 import re
+import socket
+import sys
 
 
-def excute():
-    print(repeat_character('thongdanghoang'))
+def execute():
+    socket_ex1()
+
+
+def socket_ex1():
+    soc = socket.socket()
+    print('Socket successfully created')
+
+    # can we use any port without any error?
+    port = 80
+
+    # how can bind work, the meaning of bind's parameters?
+    soc.bind(('', port))
+    print('socket binded to', port)
+
+    # what is 5 as parameter, can we use another number?
+    soc.listen(5)
+    print('socket is listening')
+
+    while True:
+        # what kind of this syntax?
+        clientSocket, clientAddress = soc.accept()
+        print('got connection from ', clientAddress)
+
+        clientSocket.send('Thank you for connection'.encode())
+
+        clientSocket.close()
+
+        break
+
+
+def connect_google():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        print('Socket successfully created!')
+    except socket.error as err:
+        print('Socket creation failed with error %s' % (err))
+
+    port = 80
+
+    try:
+        host_ip = socket.gethostbyname('www.google.com')
+    except socket.gaierror as err:
+        print('there was an error resolving the host')
+        sys.exit()
+
+    s.connect((host_ip, port))
+
+    print('the socket has successfully connected to google')
 
 
 def repeat_character(string):
@@ -71,4 +120,4 @@ def sort(list, order):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    excute()
+    execute()
